@@ -1,0 +1,9 @@
+{
+  "id": "capture-overlay",
+  "name": "Capture Overlay",
+  "version": "0.1.0",
+  "minAppVersion": "1.13.0",
+  "description": "A global hotkey toggles one note in an always-on-top window.",
+  "author": "Max Burgess",
+  "isDesktopOnly": true
+}

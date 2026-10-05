@@ -1,0 +1,6 @@
+/* Chrome removal for the overlay window only. Class names are Obsidian's and undocumented. */
+body.capture-overlay .workspace-tab-header-container { display: none; }
+body.capture-overlay .view-header-nav-buttons { display: none; }
+body.capture-overlay .view-header { -webkit-app-region: drag; padding-left: 76px; }
+body.capture-overlay .view-header .view-actions,
+body.capture-overlay .view-header .clickable-icon { -webkit-app-region: no-drag; }

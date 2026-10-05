@@ -1,0 +1,42 @@
+Excerpts from three recordings made with the macOS sample tool on 2026-10-05.
+Each line is: number of samples, then the function the thread was in.
+Samples were taken every millisecond, so the counts read as milliseconds.
+
+1. Obsidian's main thread during one show of the overlay (15 second recording).
+
+1697 +[NSSharingService sharingServicesForItems:]  (in AppKit) + 52  [0x191393d28]
+1679 -[SHKItemAttributeStore attributes]  (in ShareKit) + 72  [0x1c42ccd4c]
+1679 semaphore_timedwait_trap  (in libsystem_kernel.dylib) + 8  [0x18cc41bc8]
+
+2. The same wait in an earlier, shorter recording, with the calls leading to it.
+
+244 +[NSSharingService sharingServicesForItems:]  (in AppKit) + 52  [0x191393d28]
+244 +[NSSharingService sharingServicesForItems:mask:]  (in AppKit) + 64  [0x191393e08]
+244 +[SHKSharingService sharingServicesForItems:mask:]  (in ShareKit) + 96  [0x1c4261e24]
+244 +[SHKSharingService sharingServicesForContext:]  (in ShareKit) + 436  [0x1c4287b4c]
+242 +[SHKSharingService sharingServicesForFilteredItemsWithContext:]  (in ShareKit) + 712  [0x1c4287ee4]
+242 +[SHKSharingService queryExtensionsForContext:]  (in ShareKit) + 1960  [0x1c4288984]
+241 +[SHKSharingService sharingServicesWithIdentifier:attributes:matchingDictionary:attributeStore:invokedByPicker:allowInactive:]  (in ShareKit) + 1456  [0x1c425e7fc]
+241 +[SHKSharingService addServicesFromPlugIns:compatibleWithUserDict:toServices:allowInactive:]  (in ShareKit) + 248  [0x1c425ed34]
+237 +[SHKSharingService addServicesFromPlugIn:legacyPlugInDict:compatibleWithUserDict:toServices:allowInactive:]  (in ShareKit) + 884  [0x1c425f2c0]
+236 +[SHKSharingService descriptionForSharingServiceDict:bundle:attributeStore:]  (in ShareKit) + 648  [0x1c425fcbc]
+236 +[SHKSharingService populateDescription:withAttributeStore:forAppIdentifier:]  (in ShareKit) + 144  [0x1c426060c]
+236 -[SHKItemAttributeStore attributes]  (in ShareKit) + 72  [0x1c42ccd4c]
+236 _dispatch_semaphore_wait_slow  (in libdispatch.dylib) + 76  [0x18caccae8]
+236 _dispatch_sema4_timedwait  (in libdispatch.dylib) + 64  [0x18caffdb8]
+236 semaphore_timedwait_trap  (in libsystem_kernel.dylib) + 8  [0x18cc41bc8]
+
+3. tools/share-lookup.swift run on its own, with Obsidian not involved.
+   A worker thread, waiting for Spotlight to answer a metadata query.
+
+1917 __70-[SHKItemAttributeStore attributesForShareItem:withCompletionHandler:]_block_invoke  (in ShareKit) + 220  [0x1c425d9d0]
+1917 MDItemCopyAttributes  (in Metadata) + 624  [0x1968e7d5c]
+1917 fetchAttributesForItems  (in Metadata) + 228  [0x1968e6a08]
+1917 sendServerMessageWithTimeout  (in Metadata) + 80  [0x1968b8a78]
+1917 xpc_connection_send_message_with_reply_sync  (in libxpc.dylib) + 284  [0x18c95eeb0]
+1917 dispatch_mach_send_with_result_and_wait_for_reply  (in libdispatch.dylib) + 60  [0x18cae6004]
+1917 _dispatch_mach_send_and_wait_for_reply  (in libdispatch.dylib) + 548  [0x18cae5c64]
+1917 mach_msg  (in libsystem_kernel.dylib) + 24  [0x18cc41fc0]
+1917 mach_msg_overwrite  (in libsystem_kernel.dylib) + 480  [0x18cc4a9c0]
+1917 mach_msg2_internal  (in libsystem_kernel.dylib) + 76  [0x18cc54574]
+1917 mach_msg2_trap  (in libsystem_kernel.dylib) + 8  [0x18cc41c34]
